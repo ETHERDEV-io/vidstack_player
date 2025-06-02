@@ -1,0 +1,246 @@
+<html>
+  <head>
+    <title>Dynamic Player (CSS Example Base)</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="stylesheet" href="./src/document.css" />
+    <link rel="stylesheet" href="./src/player.css" />
+    <script src="./src/main.ts" type="module"></script>
+    <style>
+      .server-flag { /* Added for server flags */
+        width: 20px;
+        height: 15px;
+        margin-right: 8px;
+        object-fit: contain;
+        vertical-align: middle;
+      }
+       /* Ensure long menu lists are scrollable */
+      media-menu-items media-radio-group {
+        max-height: 200px; /* Adjust as needed */
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <media-player
+        title="Loading..."
+        src=""
+        crossorigin
+        playsinline
+      >
+        <media-provider>
+          <media-poster
+            src=""
+            alt="Video Poster"
+          ></media-poster>
+        </media-provider>
+
+        <media-gesture event="pointerup" action="toggle:paused"></media-gesture>
+        <media-gesture event="dblpointerup" action="toggle:fullscreen"></media-gesture>
+        <media-gesture event="pointerup" action="toggle:controls"></media-gesture>
+        <media-gesture event="dblpointerup" action="seek:-10"></media-gesture>
+        <media-gesture event="dblpointerup" action="seek:10"></media-gesture>
+
+        <media-captions></media-captions>
+
+        <media-controls>
+          <div class="media-controls-spacer"></div>
+          <media-controls-group>
+            <media-time-slider class="media-slider">
+              <media-slider-chapters>
+                <template>
+                  <div class="media-slider-chapter">
+                    <div class="media-slider-track"></div>
+                    <div class="media-slider-track-fill media-slider-track"></div>
+                    <div class="media-slider-progress media-slider-track"></div>
+                  </div>
+                </template>
+              </media-slider-chapters>
+              <div class="media-slider-thumb"></div>
+              <media-slider-preview>
+                <media-slider-thumbnail src=""></media-slider-thumbnail> <!-- Can be dynamic -->
+                <div data-part="chapter-title"></div>
+                <media-slider-value></media-slider-value>
+              </media-slider-preview>
+            </media-time-slider>
+          </media-controls-group>
+
+          <media-controls-group>
+            <media-tooltip>
+              <media-tooltip-trigger>
+                <media-play-button class="media-button">
+                  <media-icon class="media-play-icon" type="play"></media-icon>
+                  <media-icon class="media-pause-icon" type="pause"></media-icon>
+                </media-play-button>
+              </media-tooltip-trigger>
+              <media-tooltip-content class="media-tooltip" placement="top">
+                <span class="media-play-tooltip-text">Play</span>
+                <span class="media-pause-tooltip-text">Pause</span>
+              </media-tooltip-content>
+            </media-tooltip>
+
+            <media-tooltip>
+              <media-tooltip-trigger>
+                <media-mute-button class="media-button">
+                  <media-icon class="media-mute-icon" type="mute"></media-icon>
+                  <media-icon class="media-volume-low-icon" type="volume-low"></media-icon>
+                  <media-icon class="media-volume-high-icon" type="volume-high"></media-icon>
+                </media-mute-button>
+              </media-tooltip-trigger>
+              <media-tooltip-content class="media-tooltip" placement="top">
+                <span class="media-mute-tooltip-text">Unmute</span>
+                <span class="media-unmute-tooltip-text">Mute</span>
+              </media-tooltip-content>
+            </media-tooltip>
+
+            <media-volume-slider class="media-slider">
+              <div class="media-slider-track"></div>
+              <div class="media-slider-track-fill media-slider-track"></div>
+              <div class="media-slider-thumb"></div>
+              <media-slider-preview no-clamp>
+                <media-slider-value></media-slider-value>
+              </media-slider-preview>
+            </media-volume-slider>
+
+            <div class="media-time-group">
+              <media-time type="current"></media-time>
+              <div class="media-time-divider">/</div>
+              <media-time type="duration"></media-time>
+            </div>
+
+            <media-chapter-title></media-chapter-title>
+            <div class="media-controls-spacer"></div>
+
+            <media-tooltip>
+              <media-tooltip-trigger>
+                <media-caption-button class="media-button">
+                  <media-icon class="media-cc-on-icon" type="closed-captions-on"></media-icon>
+                  <media-icon class="media-cc-off-icon" type="closed-captions"></media-icon>
+                </media-caption-button>
+              </media-tooltip-trigger>
+              <media-tooltip-content class="media-tooltip" placement="top">
+                <span class="media-cc-on-tooltip-text">Disable Captions</span>
+                <span class="media-cc-off-tooltip-text">Enable Captions</span>
+              </media-tooltip-content>
+            </media-tooltip>
+
+            <media-menu>
+              <media-tooltip>
+                <media-tooltip-trigger>
+                  <media-menu-button class="media-menu-button media-button">
+                    <media-icon class="media-rotate-icon" type="settings"></media-icon>
+                  </media-menu-button>
+                </media-tooltip-trigger>
+                <media-tooltip-content class="media-tooltip" placement="top">Settings</media-tooltip-content>
+              </media-tooltip>
+              <media-menu-items placement="top end">
+                <!-- Server Submenu -->
+                <media-menu id="dynamic-server-menu">
+                  <media-menu-button class="media-menu-button">
+                    <media-icon class="media-menu-button-close-icon" type="chevron-left"></media-icon>
+                    <media-icon class="media-menu-button-icon" type="playlist"></media-icon> <!-- SERVER ICON -->
+                    <span class="media-menu-button-label">Server</span>
+                    <span class="media-menu-button-hint" data-part="hint"></span>
+                    <media-icon class="media-menu-button-open-icon" type="chevron-right"></media-icon>
+                  </media-menu-button>
+                  <media-menu-items>
+                    <media-radio-group class="media-radio-group" data-type="server-select">
+                      <template>
+                        <media-radio>
+                          <div class="media-radio-check"></div>
+                          <img src="" alt="flag" class="server-flag" style="display:none;" />
+                          <span class="media-radio-label" data-part="label"></span>
+                        </media-radio>
+                      </template>
+                    </media-radio-group>
+                  </media-menu-items>
+                </media-menu>
+
+                <!-- Quality Submenu -->
+                <media-menu id="dynamic-quality-menu">
+                  <media-menu-button class="media-menu-button">
+                    <media-icon class="media-menu-button-close-icon" type="chevron-left"></media-icon>
+                    <media-icon class="media-menu-button-icon" type="odometer"></media-icon> <!-- QUALITY ICON -->
+                    <span class="media-menu-button-label">Quality</span>
+                    <span class="media-menu-button-hint" data-part="hint"></span>
+                    <media-icon class="media-menu-button-open-icon" type="chevron-right"></media-icon>
+                  </media-menu-button>
+                  <media-menu-items>
+                    <media-radio-group class="media-radio-group" data-type="quality-select">
+                      <template>
+                        <media-radio>
+                          <div class="media-radio-check"></div>
+                          <span class="media-radio-label" data-part="label"></span>
+                        </media-radio>
+                      </template>
+                    </media-radio-group>
+                  </media-menu-items>
+                </media-menu>
+
+                <!-- Caption Submenu (Selection) -->
+                <media-menu id="dynamic-captions-menu">
+                  <media-menu-button class="media-menu-button">
+                    <media-icon class="media-menu-button-close-icon" type="chevron-left"></media-icon>
+                    <media-icon class="media-menu-button-icon" type="closed-captions"></media-icon>
+                    <span class="media-menu-button-label">Captions</span>
+                    <span class="media-menu-button-hint" data-part="hint"></span>
+                    <media-icon class="media-menu-button-open-icon" type="chevron-right"></media-icon>
+                  </media-menu-button>
+                  <media-menu-items>
+                    <media-captions-radio-group class="media-radio-group" data-type="caption-select">
+                       <template>
+                        <media-radio>
+                          <div class="media-radio-check"></div>
+                          <span class="media-radio-label" data-part="label"></span>
+                        </media-radio>
+                      </template>
+                    </media-captions-radio-group>
+                  </media-menu-items>
+                </media-menu>
+
+                <!-- Caption Styles (uses built-in Vidstack UI) -->
+                 <media-menu>
+                    <media-menu-button class="media-menu-button">
+                        <media-icon class="media-menu-button-icon" type="closed-captions-settings"></media-icon>
+                        <span class="media-menu-button-label">Caption Styles</span>
+                        <span class="media-menu-button-hint" data-part="hint">Default</span>
+                        <media-icon class="media-menu-button-open-icon" type="chevron-right"></media-icon>
+                    </media-menu-button>
+                    <media-settings-menu type="captions" class="vds-menu-items"></media-settings-menu>
+                </media-menu>
+
+              </media-menu-items>
+            </media-menu>
+
+            <media-tooltip>
+              <media-tooltip-trigger>
+                <media-pip-button class="media-button">
+                  <media-icon class="media-pip-enter-icon" type="picture-in-picture"></media-icon>
+                  <media-icon class="media-pip-exit-icon" type="picture-in-picture-exit"></media-icon>
+                </media-pip-button>
+              </media-tooltip-trigger>
+              <media-tooltip-content class="media-tooltip" placement="top">
+                <span class="media-pip-enter-tooltip-text">Enter PIP</span>
+                <span class="media-pip-exit-tooltip-text">Exit PIP</span>
+              </media-tooltip-content>
+            </media-tooltip>
+
+            <media-tooltip>
+              <media-tooltip-trigger>
+                <media-fullscreen-button class="media-button">
+                  <media-icon class="media-fs-enter-icon" type="fullscreen"></media-icon>
+                  <media-icon class="media-fs-exit-icon" type="fullscreen-exit"></media-icon>
+                </media-fullscreen-button>
+              </media-tooltip-trigger>
+              <media-tooltip-content class="media-tooltip" placement="top end">
+                <span class="media-fs-enter-tooltip-text">Enter Fullscreen</span>
+                <span class="media-fs-exit-tooltip-text">Exit Fullscreen</span>
+              </media-tooltip-content>
+            </media-tooltip>
+          </media-controls-group>
+        </media-controls>
+      </media-player>
+    </main>
+  </body>
+</html>
