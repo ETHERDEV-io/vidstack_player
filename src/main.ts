@@ -2,15 +2,6 @@ import 'vidstack/player';
 import 'vidstack/player/ui';
 import 'vidstack/icons';
 
-import {
-  type TextTrackInit,
-  type MediaRadioElement,
-  type MediaPlayerElement,
-  type MediaMenuElement,
-  type MediaRadioGroupElement,
-  type MediaCaptionsRadioGroupElement,
-} from 'vidstack';
-
 interface ServerInfo { name: string; status: string; language: string; }
 interface ServersResponse { servers: ServerInfo[]; }
 interface ApiSubtitleInfo { file: string; label: string; }
